@@ -1,6 +1,6 @@
 {
   "name": "detect-rosetta",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "yarn@4.6.0",
   "description": "Detect if a Node.js process is running under Rosetta translation on macOS",
   "type": "module",
