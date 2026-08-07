@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -33,24 +33,19 @@ describe("detectRosetta", () => {
 
 // Integration test for native ARM execution (works locally on Apple Silicon)
 describe("detectRosetta integration", () => {
-  const isAppleSilicon =
-    process.platform === "darwin" && process.arch === "arm64";
+  const isAppleSilicon = process.platform === "darwin" && process.arch === "arm64";
 
-  it.skipIf(!isAppleSilicon)(
-    "should return false when running natively on ARM",
-    () => {
-      // Run a subprocess to verify the detection works
-      const script = `
+  it.skipIf(!isAppleSilicon)("should return false when running natively on ARM", () => {
+    // Run a subprocess to verify the detection works
+    const script = `
         import detectRosetta from '${projectRoot}/dist/index.js';
         console.log(detectRosetta());
       `;
-      const result = execSync(
-        `arch -arm64 node --input-type=module -e "${script}"`,
-        { encoding: "utf-8" }
-      );
-      expect(result.trim()).toBe("false");
-    }
-  );
+    const result = execSync(`arch -arm64 node --input-type=module -e "${script}"`, {
+      encoding: "utf-8",
+    });
+    expect(result.trim()).toBe("false");
+  });
 
   // NOTE: The x86_64 Rosetta test requires an x86_64 Node.js installation
   // and is tested in CI via the rosetta-test job (see .github/workflows/ci.yml)

@@ -9,11 +9,14 @@ A Node.js package for detecting if a process is running under Rosetta translatio
 ## Installation
 
 ```sh
-yarn add detect-rosetta
+pnpm add detect-rosetta
 ```
 
 > [!NOTE]
-> This package is ESM-only. Use `import`/`export` syntax or dynamic `import()` - `require('detect-rosetta')` is not supported.
+> This package is ESM-only. Use `import`/`export` syntax
+
+> [!TIP]
+> Building a Vite app? **[vite-plugin-native-modules](https://github.com/biw/vite-plugin-native-modules)** handles `detect-rosetta` automatically.
 
 ## Usage
 

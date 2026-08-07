@@ -1,8 +1,28 @@
 {
   "name": "detect-rosetta",
   "version": "0.0.1",
-  "packageManager": "yarn@4.6.0",
   "description": "Detect if a Node.js process is running under Rosetta translation on macOS",
+  "keywords": [
+    "addon",
+    "apple-silicon",
+    "arm64",
+    "macos",
+    "napi",
+    "native",
+    "rosetta",
+    "rosetta2",
+    "translation",
+    "x86_64"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biw/detect-rosetta.git"
+  },
+  "files": [
+    "dist",
+    "prebuilds"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,38 +32,17 @@
       "import": "./dist/index.js"
     }
   },
-  "files": [
-    "dist",
-    "prebuilds"
-  ],
   "scripts": {
-    "build": "tsup",
+    "build": "vp pack",
     "build:native": "node-gyp rebuild",
+    "check": "vp check",
     "clean": "node-gyp clean && rm -rf dist",
-    "lint": "tsc --noEmit",
+    "install": "node -e \"process.exit(0)\"",
+    "lint": "vp lint",
     "prebuild": "prebuildify --napi --strip",
-    "test": "vitest run",
-    "prepublishOnly": "yarn build"
-  },
-  "keywords": [
-    "rosetta",
-    "rosetta2",
-    "macos",
-    "apple-silicon",
-    "arm64",
-    "x86_64",
-    "translation",
-    "native",
-    "addon",
-    "napi"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/biw/detect-rosetta.git"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "test": "vp test run",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "vp config"
   },
   "dependencies": {
     "node-addon-api": "^8.0.0",
@@ -53,8 +52,12 @@
     "@types/node": "^22.0.0",
     "node-gyp": "^12.1.0",
     "prebuildify": "^6.0.0",
-    "tsup": "^8.0.0",
     "typescript": "^5.0.0",
-    "vitest": "^3.0.0"
-  }
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@10.33.0"
 }
