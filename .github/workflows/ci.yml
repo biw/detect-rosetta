@@ -118,3 +118,12 @@ jobs:
             exit 1
           fi
           echo "SUCCESS: Rosetta detection working correctly"
+
+  publish:
+    needs: rosetta-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/publish.yml
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
