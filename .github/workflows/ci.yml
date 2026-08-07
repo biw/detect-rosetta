@@ -29,33 +29,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          node-version: 22
-
-      - name: Enable Corepack
-        run: corepack enable
+          node-version: "22"
+          cache: true
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: vp install
 
       - name: Build TypeScript
-        run: yarn build
+        run: vp pack
 
       - name: Build native addon
         if: runner.os == 'macOS'
-        run: yarn build:native
+        run: vp run build:native
 
       - name: Run tests
-        run: yarn test
+        run: vp test
 
       - name: Display Rosetta detection result
-        run: yarn node -e "import('./dist/index.js').then(m => console.log('Running under Rosetta:', m.default()))"
+        run: node -e "import('./dist/index.js').then(m => console.log('Running under Rosetta:', m.default()))"
 
       - name: Create prebuild
         if: runner.os == 'macOS'
-        run: yarn prebuild
+        run: vp run prebuild
 
       - name: Upload prebuild artifact
         if: runner.os == 'macOS'
@@ -86,10 +84,10 @@ jobs:
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          
+
           # Install x86_64 Node
           arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && nvm install 22"
-          
+
           # Verify installation
           arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && node --version && node -p 'process.arch'"
 
@@ -101,12 +99,12 @@ jobs:
       - name: Install dependencies
         run: |
           export NVM_DIR="$HOME/.nvm"
-          arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && yarn install --immutable"
+          arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && pnpm install --frozen-lockfile"
 
       - name: Build TypeScript
         run: |
           export NVM_DIR="$HOME/.nvm"
-          arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && yarn build"
+          arch -x86_64 /bin/bash -c "source $NVM_DIR/nvm.sh && pnpm exec vp pack"
 
       - name: Verify Rosetta detection returns true
         run: |
