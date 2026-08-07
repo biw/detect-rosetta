@@ -37,6 +37,7 @@
     "build:native": "node-gyp rebuild",
     "check": "vp check",
     "clean": "node-gyp clean && rm -rf dist",
+    "install": "node -e \"process.exit(0)\"",
     "lint": "vp lint",
     "prebuild": "prebuildify --napi --strip",
     "test": "vp test run",
